@@ -340,6 +340,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       [_webView loadHTMLString:@"" baseURL:nil];
       return;
     }
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.google.com.tw"];
+    request = [[NSURLRequest alloc]initWithURL:url];
+    
     [self loadRequest:request];
   }
 }
