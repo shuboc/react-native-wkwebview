@@ -73,6 +73,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     _webView.UIDelegate = self;
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
+    _webView.scrollView.layer.masksToBounds = NO;
 
 #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 /* __IPHONE_11_0 */
     // `contentInsetAdjustmentBehavior` is only available since iOS 11.
