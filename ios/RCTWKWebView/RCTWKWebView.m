@@ -584,6 +584,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   NSString *scheme = navigationAction.request.URL.scheme;
   if ((navigationAction.targetFrame.isMainFrame || _openNewWindowInWebView) && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
+
+    // Allow FB js sdk to login by opening a new popup webview
+    NSString *searchedString = navigationAction.request.URL.absoluteString;
+    NSRange searchedRange = NSMakeRange(0, [searchedString length]);
+    NSString *pattern = @"https:\\/\\/m\\.facebook\\.com\\/v(.*)\\/dialog\\/oauth";
+    NSError  *error = nil;
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
+    NSArray* matches = [regex matchesInString:searchedString options:0 range: searchedRange];
+    if ([matches count] > 0) {
+      WKWebView *popup = [[WKWebView alloc] initWithFrame:self.bounds configuration:configuration];
+      popup.UIDelegate = self;
+      popup.navigationDelegate = self;
+      popup.scrollView.delegate = self;
+      [self addSubview:popup];
+
+      return popup;
+    }
+
     [webView loadRequest:navigationAction.request];
   } else {
     UIApplication *app = [UIApplication sharedApplication];
@@ -598,6 +616,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
 {
   RCTLogWarn(@"Webview Process Terminated");
+}
+
+- (void) webViewDidClose:(WKWebView *)webView{
+  // Popup window is closed, we remove it
+  [webView removeFromSuperview];
 }
 
 @end
