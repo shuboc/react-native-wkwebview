@@ -586,6 +586,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   if ((navigationAction.targetFrame.isMainFrame || _openNewWindowInWebView) && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
 
     // Allow FB js sdk to login by opening a new popup webview
+    // Ref: https://stackoverflow.com/questions/31988121/facebook-login-button-does-not-work-within-wkwebview
     NSString *searchedString = navigationAction.request.URL.absoluteString;
     NSRange searchedRange = NSMakeRange(0, [searchedString length]);
     NSString *pattern = @"https:\\/\\/m\\.facebook\\.com\\/v(.*)\\/dialog\\/oauth";
