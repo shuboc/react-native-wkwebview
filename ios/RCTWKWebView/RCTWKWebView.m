@@ -589,7 +589,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     // Ref: https://stackoverflow.com/questions/31988121/facebook-login-button-does-not-work-within-wkwebview
     NSString *searchedString = navigationAction.request.URL.absoluteString;
     NSRange searchedRange = NSMakeRange(0, [searchedString length]);
-    NSString *pattern = @"^https:\\/\\/m\\.facebook\\.com\\/.*dialog\\/oauth";
+    NSString *pattern = @"^https:\\/\\/(www|m)\\.facebook\\.com\\/.*dialog\\/oauth";
     NSError  *error = nil;
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
     NSArray* matches = [regex matchesInString:searchedString options:0 range: searchedRange];
